@@ -1,0 +1,31 @@
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Backend (Elixir)
+/_build
+/deps
+erl_crash.dump
+*.ez
+.env
+
+# Frontend (Node)
+node_modules/
+npm-debug.log
+yarn-error.log
+.env.local
+.env.*.local
+
+# Build
+dist/
+build/
+
+# Docker
+.dockerignore
