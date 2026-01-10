@@ -4,12 +4,12 @@ on:
   push:
     branches: [main, develop]
     paths:
-      - 'packages/frontend/**'
-      - '.github/workflows/frontend-tests.yml'
+      - "packages/frontend/**"
+      - ".github/workflows/frontend-tests.yml"
   pull_request:
     branches: [main, develop]
     paths:
-      - 'packages/frontend/**'
+      - "packages/frontend/**"
 
 jobs:
   test:
@@ -26,8 +26,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-          cache-dependency-path: 'packages/frontend/package-lock.json'
+          cache: "npm"
+          cache-dependency-path: "package-lock.json"
 
       - name: Install dependencies
         run: cd packages/frontend && npm install
