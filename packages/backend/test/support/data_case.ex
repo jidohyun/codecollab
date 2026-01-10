@@ -13,7 +13,7 @@ defmodule Backend.DataCase do
   by setting `use Backend.DataCase, async: true`, although
   this option is not recommended for other databases.
   """
-
+  use ExUnit.CaseTemplate
   alias Ecto.Adapters.SQL.Sandbox
 
   using do
