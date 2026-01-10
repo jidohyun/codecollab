@@ -1,0 +1,26 @@
+{
+  "name": "codecollab",
+  "version": "0.1.0",
+  "description": "AI-enhanced real-time collaborative code editor and code review platform",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "docker-compose up -d",
+    "dev:down": "docker-compose down",
+    "dev:logs": "docker-compose logs -f",
+    "lint": "cd packages/frontend && npm run lint",
+    "test": "cd packages/frontend && npm run test",
+    "type-check": "cd packages/frontend && npm run type-check"
+  },
+  "keywords": [
+    "collaborative-editing",
+    "code-review",
+    "ai",
+    "websocket",
+    "saas"
+  ],
+  "author": "jidohyun",
+  "license": "MIT"
+}
