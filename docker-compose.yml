@@ -1,0 +1,77 @@
+version: "3.8"
+
+services:
+  # PostgreSQL 데이터베이스
+  postgres:
+    image: postgres:16-alpine
+    container_name: codecollab-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: codecollab_dev
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis (Pub/Sub 및 캐싱)
+  redis:
+    image: redis:7-alpine
+    container_name: codecollab-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Elixir/Phoenix 백엔드
+  backend:
+    build:
+      context: ./packages/backend
+      dockerfile: Dockerfile
+    container_name: codecollab-backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      BACKEND_ENV: dev
+      DATABASE_URL: ecto://postgres:postgres@postgres:5432/codecollab_dev
+      REDIS_URL: redis://redis:6379/0
+      SECRET_KEY_BASE: dev_secret_key_base_64_chars_or_more_1234567890
+    volumes:
+      - ./packages/backend:/app
+      - /app/_build
+      - /app/deps
+    ports:
+      - "4000:4000"
+    command: mix phx.server
+
+  # React 프론트엔드
+  frontend:
+    build:
+      context: ./packages/frontend
+      dockerfile: Dockerfile
+    container_name: codecollab-frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./packages/frontend:/app
+      - /app/node_modules
+    environment:
+      REACT_APP_API_URL: http://localhost:4000
+      REACT_APP_WS_URL: ws://localhost:4000/ws
+
+volumes:
+  postgres_data:
+  redis_data:

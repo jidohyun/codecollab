@@ -39,15 +39,16 @@ defmodule Backend.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-    {:phoenix, "~> 1.7.14"},
-    {:phoenix_ecto, "~> 4.6"},
-    {:ecto_sql, "~> 3.12"},
-    {:postgrex, "~> 0.19"},
-    {:jason, "~> 1.4"},
-    {:cors_plug, "~> 3.0"},
-    {:guardian, "~> 2.3"},
-    {:bcrypt_elixir, "~> 3.1"},
-    {:credo, "~> 1.7", only: [:dev, :test], runtime: false}
+      {:phoenix, "~> 1.7.14"},
+      {:phoenix_ecto, "~> 4.6"},
+      {:ecto_sql, "~> 3.12"},
+      {:postgrex, "~> 0.19"},
+      {:jason, "~> 1.4"},
+      {:cors_plug, "~> 3.0"},
+      {:guardian, "~> 2.3"},
+      {:bcrypt_elixir, "~> 3.1"},
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
+      {:bandit, "~> 1.0"}
     ]
   end
 
