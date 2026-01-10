@@ -1,0 +1,58 @@
+name: Backend Tests
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - "packages/backend/**"
+      - ".github/workflows/backend-tests.yml"
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - "packages/backend/**"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: codecollab_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Elixir
+        uses: erlef/setup-elixir@v1
+        with:
+          elixir-version: 1.15
+          otp-version: 26
+
+      - name: Restore dependencies cache
+        uses: actions/cache@v3
+        with:
+          path: packages/backend/deps
+          key: ${{ runner.os }}-mix-${{ hashFiles('packages/backend/mix.lock') }}
+          restore-keys: ${{ runner.os }}-mix-
+
+      - name: Install dependencies
+        run: cd packages/backend && mix deps.get
+
+      - name: Run tests
+        run: cd packages/backend && mix test
+        env:
+          DATABASE_URL: ecto://postgres:postgres@localhost:5432/codecollab_test
+
+      - name: Run Credo (Code Analysis)
+        run: cd packages/backend && mix credo suggest --strict
