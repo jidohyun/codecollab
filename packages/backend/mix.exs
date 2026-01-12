@@ -37,20 +37,43 @@ defmodule Backend.MixProject do
   # Specifies your project dependencies.
   #
   # Type `mix help deps` for examples and options.
-  defp deps do
+  def deps do
     [
-      {:phoenix, "~> 1.7.14"},
-      {:phoenix_ecto, "~> 4.6"},
-      {:ecto_sql, "~> 3.12"},
+      # Web & API
+      {:phoenix, "~> 1.7"},
+      {:phoenix_ecto, "~> 4.5"},
+      {:ecto_sql, "~> 3.10"},
       {:postgrex, "~> 0.19"},
+      {:phoenix_live_reload, "~> 1.4", only: :dev},
+      {:phoenix_live_dashboard, "~> 0.8"},
+      {:telemetry_metrics, "~> 0.6"},
+      {:telemetry_poller, "~> 1.1"},
+
+      # JSON & API
       {:jason, "~> 1.4"},
       {:cors_plug, "~> 3.0"},
+
+      # Authentication
       {:guardian, "~> 2.3"},
       {:bcrypt_elixir, "~> 3.1"},
-      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
-      {:bandit, "~> 1.0"}
+
+      # Database
+      {:ecto_enum, "~> 1.4"},
+
+      # Code Quality
+      {:credo, "~> 1.7", only: [:dev, :test]},
+      {:dialyxir, "~> 1.4", only: [:dev], runtime: false},
+
+      # Testing
+      {:ex_unit_notifier, "~> 0.1", only: :test},
+
+      # Utilities
+      {:gettext, "~> 0.22"},
+      {:plug_cowboy, "~> 2.7"},
+      {:httpoison, "~> 2.0"},
     ]
   end
+
 
   # Aliases are shortcuts or tasks specific to the current project.
   # For example, to install project dependencies and perform other setup tasks, run:
